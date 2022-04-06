@@ -1,0 +1,24 @@
+{
+  "name": "creating-a-to-do-list",
+  "version": "1.0.0",
+  "description": "handling todo list",
+  "main": "api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marielysech/toDoList.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Marielysech/toDoList/issues"
+  },
+  "homepage": "https://github.com/Marielysech/toDoList#readme",
+  "dependencies": {
+    "expres": "^0.0.5",
+    "express": "^4.17.3",
+    "path": "^0.12.7"
+  }
+}
