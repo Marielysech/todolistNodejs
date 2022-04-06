@@ -14,9 +14,10 @@ app.listen(port, hostName, (err) => {
 //Database
 
 let taskDatabase = []; //will include all typicalEntries
+let idCounter = 0 // to assign IDs
 
 // let typicalEntry = {
-//    id: //number for each new entry it will be = array.length
+//    id: //number for each new entry it will be = counter +1
 //    action: //plain text of the task
 //    status: //automatically set to TODO but with further action (PUT) could be modify
 //}
@@ -36,22 +37,14 @@ app.route('/tasks')
     }) //access all tasks
 
     .post((req, res) => {
-        function idAssignation() {
-            if (taskDatabase.length < 1) {
-                return 1
-            } else if (taskDatabase[taskDatabase.length + 1]) {
-                return 'error id already taken'
-            } else
-            return taskDatabase.length + 1
-        }
-
         let newEntry = {
+            id: idCounter+1
             action: req.body.action,
             status: "todo"
         }
-        newEntry.id = idAssignation()
+        
         taskDatabase.push(newEntry)
-        res.redirect('/task');
+        res.redirect('/tasks');
     }); //create new task
 
 
