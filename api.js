@@ -47,12 +47,8 @@ app.get('/', (req,res) => {
 // '/tasks/' endpoint
 app.route('/tasks')
     .get((req, res) => { //access all tasks
-        if (taskDatabase) {
-            taskDatabase = fs.readFile('public/storage.json', function (err, data) {
-                if (err) return console.log(err);
-                console.log('Data retrieved')
-                console.log(data.toString().split('\n'))
-            })
+        if (taskJson) {
+            console.log(taskJson)
             return res.send(taskJson)
         } return res.send("No task yet")
     // res.render('index', { tasksArray: taskDatabase });
@@ -72,30 +68,33 @@ app.route('/tasks')
             console.log("New data added");
           });
         res.status(200)  
-        res.redirect('/');
+        res.send(`${newEntry.action} added`);
 });
 
 // '/tasks/:id' endpoint
 app.route('/tasks/:id')
     .get((req, res) => { //access specific tasks
-        const task = taskDatabase.filter(element => element.id === parseInt(req.params.id));
+        
+        const task = taskJson.filter(element => element.id === parseInt(req.params.id));
          if (!task) return res.status(404).send("The task with the given ID does not exist.");
-        else res.sendStatus(task);
+        else 
+        res.sendStatus(task);
     }) 
 
     .put((req, res) => { //update specific tasks
-        let index = taskDatabase.findIndex( element => element.id === parseInt(req.params.id))
 
-        taskDatabase[index].status = req.body.status || taskDatabase[index].status
-        taskDatabase[index].action = req.body.action || taskDatabase[index].action
+        let index = taskJson.findIndex( element => element.id === parseInt(req.params.id))
+
+        taskJson[index].status = req.body.status || taskJson[index].status
+        taskJson[index].action = req.body.action || taskJson[index].action
         res.send(`Task ${req.params.id} has been updated`);
 
     }) 
 
     .delete((req, res) => { //supress specific tasks
-        let index = taskDatabase.findIndex( element => element.id === parseInt(req.params.id))
-        taskDatabase.splice(index, 1)
-        res.send(`Task ${req.params.id} has been deleted`);
+        let index = taskJson.findIndex( element => element.id === parseInt(req.params.id))
+        taskJson.splice(index, 1)
+        res.send(`${taskJson[index].content} has been deleted`);
     }); 
 
     //TODO check later if i can change that
