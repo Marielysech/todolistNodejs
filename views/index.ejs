@@ -10,10 +10,24 @@
     
 <div class="appContainer">
     <h2>Come and create your To-do List here</h2>
-    <form action="/tasks" method="post">
+    <form action="/tasks" method="post" class="taskEntryContainer">
         <input type="text" name="action" placeholder="Add a new task here">
         <button> Add task </button>
     </form>
+    <div class="taskListContainer">
+        <ul class="taskList">
+            <% for (let i=0; i < tasksArray.length; i++) { %>
+                <li>
+                    <p>
+                        <%= tasksArray[i] %>
+                    </p>
+                </li>
+            <% } <%>     
+            
+        </ul>
+
+    </div>
+
 
 
 </div>

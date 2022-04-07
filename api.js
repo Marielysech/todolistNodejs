@@ -6,6 +6,7 @@ const ejs = require('ejs');
 
 app.use(express.static('public'));
 app.use(express.json())
+app.set('view engine', 'ejs')
 
 const port = 3000
 const hostName = 'localhost'
@@ -18,6 +19,8 @@ app.listen(port, hostName, (err) => {
 
 //Database
 let taskDatabase = []; //will include all typicalEntries
+const taskDatabaseJSON = fs.readFileSync('public/storage.json')
+const taskJson = JSON.parse(taskDatabaseJSON) // convert in JSON format
 
 
 // let typicalEntry = {
@@ -35,14 +38,24 @@ let taskDatabase = []; //will include all typicalEntries
 
 //TODO : add verification to ensure that id comparaison is on the same format (two numbers)
 
+// '/' endpoint
+
+app.get('/', (req,res) => {
+    // res.render('index', { name: "ML" });
+})
 
 // '/tasks/' endpoint
 app.route('/tasks')
     .get((req, res) => { //access all tasks
         if (taskDatabase) {
-            taskDatabase = fs.readFile(('public/storage.json').toString().split("\n"), function (err) {if (err) return console.log(err); console.log("Data retrieved")})
-            res.send(taskDatabase)
-        } res.send("No task yet")
+            taskDatabase = fs.readFile('public/storage.json', function (err, data) {
+                if (err) return console.log(err);
+                console.log('Data retrieved')
+                console.log(data.toString().split('\n'))
+            })
+            return res.send(taskJson)
+        } return res.send("No task yet")
+    // res.render('index', { tasksArray: taskDatabase });
     })
 
     .post((req, res) => { //create new task
@@ -51,15 +64,15 @@ app.route('/tasks')
             action: req.body.action,
             status: "todo"
         }
-        taskDatabase.push(newEntry)
-
-        fs.appendFile('public/storage.json', JSON.stringify(taskDatabase[taskDatabase.length-1]), 'utf8', function (err) {
-            if (err) {
-              return console.log(err);
-            }
-            return console.log('The data was appended to file!')
-          })
-        res.redirect('/tasks');
+        taskJson.push(newEntry);
+        const newData = JSON.stringify(taskJson) //back to row format
+        fs.writeFile("public/storage.json", newData, (err) => {
+            // Error checking
+            if (err) throw err;
+            console.log("New data added");
+          });
+        res.status(200)  
+        res.redirect('/');
 });
 
 // '/tasks/:id' endpoint
