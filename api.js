@@ -1,6 +1,10 @@
-const express = require('express')
-const app = express()
-let ejs = require('ejs');
+const express = require('express');
+const app = express();
+const path = require('path');
+const fs = require('fs');
+const ejs = require('ejs');
+
+app.use(express.static('public'));
 app.use(express.json())
 
 const port = 3000
@@ -13,12 +17,11 @@ app.listen(port, hostName, (err) => {
 
 
 //Database
-
 let taskDatabase = []; //will include all typicalEntries
-let idCounter = 0 // to assign IDs
+
 
 // let typicalEntry = {
-//    id: //number for each new entry it will be = counter +1
+//    id: //number for each new entry it will be = Date.now() to have unique IDs
 //    action: //plain text of the task
 //    status: //automatically set to TODO but with further action (PUT) could be modify
 //}
@@ -36,35 +39,40 @@ let idCounter = 0 // to assign IDs
 // '/tasks/' endpoint
 app.route('/tasks')
     .get((req, res) => { //access all tasks
-        if (taskDatabase.length>=1) {
-           return res.send(taskDatabase);
-        }   return res.send("There is not existing tasks");
-    }) 
+        if (taskDatabase) {
+            taskDatabase = fs.readFile(('public/storage.json').toString().split("\n"), function (err) {if (err) return console.log(err); console.log("Data retrieved")})
+            res.send(taskDatabase)
+        } res.send("No task yet")
+    })
 
     .post((req, res) => { //create new task
         let newEntry = {
-            id: idCounter+1,
+            id: Date.now(),
             action: req.body.action,
             status: "todo"
         }
-
-        idCounter = idCounter +1
-
         taskDatabase.push(newEntry)
-        res.redirect('/tasks');
-    }); 
 
+        fs.appendFile('public/storage.json', JSON.stringify(taskDatabase[taskDatabase.length-1]), 'utf8', function (err) {
+            if (err) {
+              return console.log(err);
+            }
+            return console.log('The data was appended to file!')
+          })
+        res.redirect('/tasks');
+});
 
 // '/tasks/:id' endpoint
 app.route('/tasks/:id')
     .get((req, res) => { //access specific tasks
-        res.send(taskDatabase.filter(element => element.id === parseInt(req.params.id)));
+        const task = taskDatabase.filter(element => element.id === parseInt(req.params.id));
+         if (!task) return res.status(404).send("The task with the given ID does not exist.");
+        else res.sendStatus(task);
     }) 
 
     .put((req, res) => { //update specific tasks
         let index = taskDatabase.findIndex( element => element.id === parseInt(req.params.id))
 
-        //TODO ADD IF STATEMENT REGARDING WHAT WILL BE CHANGED
         taskDatabase[index].status = req.body.status || taskDatabase[index].status
         taskDatabase[index].action = req.body.action || taskDatabase[index].action
         res.send(`Task ${req.params.id} has been updated`);
@@ -77,19 +85,17 @@ app.route('/tasks/:id')
         res.send(`Task ${req.params.id} has been deleted`);
     }); 
 
-// /tasks/:status
-app.delete('/tasks/:status', (req, res) => { // remove all tasks from specific status
-    let filterArray = taskDatabase.filter((element) => {toString(element.status) !== toString(req.params.status)})
-    console.log(taskDatabase)
-    taskDatabase = filterArray
-    console.log(taskDatabase)
+    //TODO check later if i can change that
+// // /tasks/:status
+// app.delete('/tasks/:status', ((req, res) => { // remove all tasks from specific status
+//     let filterArray = taskDatabase.filter((element) => {toString(element.status) !== toString(req.params.status)})
+//     taskDatabase = filterArray
     
-    // taskDatabase.forEach(function(elem) {
-    //     if(elem.status === req.query.status) {
-    //         taskDatabase.splice(taskDatabase.indexOf(elem), 1);
-    //     }
-    // })    
+//     // taskDatabase.forEach(function(elem) {
+//     //     if(elem.status === req.query.status) {
+//     //         taskDatabase.splice(taskDatabase.indexOf(elem), 1);
+//     //     }
+//     // })    
 
-    return res.send(`All ${req.params.status} have been removed from the list`);
-}); 
-
+//     return res.send(`All ${req.params.status} have been removed from the list`);
+// })); 
