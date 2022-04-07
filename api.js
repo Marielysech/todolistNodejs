@@ -33,7 +33,7 @@ const taskJson = JSON.parse(taskDatabaseJSON) // convert in JSON format
 // '/' endpoint
 
 app.get('/', (req,res) => {
-    // res.render('index', { name: "ML" });
+    res.render('index', { name: "ML" });
 })
 
 // '/tasks/' endpoint
