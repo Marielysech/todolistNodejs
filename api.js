@@ -18,7 +18,7 @@ app.listen(port, hostName, (err) => {
 
 
 //Database
-let taskDatabase = []; //will include all typicalEntries
+// let taskDatabaseJSON = [] 
 const taskDatabaseJSON = fs.readFileSync('public/storage.json')
 const taskJson = JSON.parse(taskDatabaseJSON) // convert in JSON format
 
@@ -29,14 +29,6 @@ const taskJson = JSON.parse(taskDatabaseJSON) // convert in JSON format
 //    status: //automatically set to TODO but with further action (PUT) could be modify
 //}
 
-//TODO : 
-    //Get /tasks => display all task entry in taskDatabase
-    //Post /tasks => create typicalEntry with the correct data to assign to each property of the typical object entry and push it to taskDatabase
-    //Delete /tasks => remove typicalEntry from the taskDatabase
-
-//TODO : at some point use JSON or to stringify ?
-
-//TODO : add verification to ensure that id comparaison is on the same format (two numbers)
 
 // '/' endpoint
 
@@ -63,7 +55,6 @@ app.route('/tasks')
         taskJson.push(newEntry);
         const newData = JSON.stringify(taskJson) //back to row format
         fs.writeFile("public/storage.json", newData, (err) => {
-            // Error checking
             if (err) throw err;
             console.log("New data added");
           });
@@ -72,14 +63,16 @@ app.route('/tasks')
 });
 
 // '/tasks/:id' endpoint
+
+//TO DO FIX THE GET FOR '/tasks/:id'
 app.route('/tasks/:id')
     .get((req, res) => { //access specific tasks
-        
         const task = taskJson.filter(element => element.id === parseInt(req.params.id));
-         if (!task) return res.status(404).send("The task with the given ID does not exist.");
-        else 
-        res.sendStatus(task);
-    }) 
+        if (task) {
+        console.log(task)
+        return res.send(task);
+        } return res.send(`The task with id:${req.params.id} doesn't exist`)
+     }) 
 
     .put((req, res) => { //update specific tasks
 
@@ -93,8 +86,10 @@ app.route('/tasks/:id')
 
     .delete((req, res) => { //supress specific tasks
         let index = taskJson.findIndex( element => element.id === parseInt(req.params.id))
-        taskJson.splice(index, 1)
-        res.send(`${taskJson[index].content} has been deleted`);
+        if (index) {
+            taskJson.splice(index, 1)
+            return res.send(`Task ${req.params.id} has been deleted`);
+        } return res.send("This task doesn't exist")
     }); 
 
     //TODO check later if i can change that
