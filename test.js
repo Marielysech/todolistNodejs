@@ -36,3 +36,10 @@ let test = [1,2,6,4,5,8,9]
 
 let index = test.findIndex(element => element === 2)
 console.log('found index is ' + index)
+
+
+let arr = [1,2,3,5,4,8,9,6,5,74,9,9,9]
+let filterArray = arr.filter(element => element !== parseInt("9"))
+arr = filterArray
+console.log("this is the new arr" + arr)
+console.log("this is the filtred array" + filterArray)

@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+let ejs = require('ejs');
 app.use(express.json())
 
 const port = 3000
@@ -29,54 +30,66 @@ let idCounter = 0 // to assign IDs
 
 //TODO : at some point use JSON or to stringify ?
 
+//TODO : add verification to ensure that id comparaison is on the same format (two numbers)
+
 
 // '/tasks/' endpoint
 app.route('/tasks')
-    .get((req, res) => {
-        res.send(taskDatabase);
-    }) //access all tasks
+    .get((req, res) => { //access all tasks
+        if (taskDatabase.length>=1) {
+           return res.send(taskDatabase);
+        }   return res.send("There is not existing tasks");
+    }) 
 
-    .post((req, res) => {
+    .post((req, res) => { //create new task
         let newEntry = {
-            id: idCounter+1
+            id: idCounter+1,
             action: req.body.action,
             status: "todo"
         }
-        
+
+        idCounter = idCounter +1
+
         taskDatabase.push(newEntry)
         res.redirect('/tasks');
-    }); //create new task
+    }); 
 
 
 // '/tasks/:id' endpoint
 app.route('/tasks/:id')
-    .get((req, res) => {
-        res.send(taskDatabase.filter(element => element.id === req.params.id));
-    }) //access specific tasks
+    .get((req, res) => { //access specific tasks
+        res.send(taskDatabase.filter(element => element.id === parseInt(req.params.id)));
+    }) 
 
-    .put((req, res) => {
-        let index = taskDatabase.findIndex( element => element.id === req.params.id)
-        taskDatabase[index].status = req.body.status
-        taskDatabase[index].action = req.body.action
+    .put((req, res) => { //update specific tasks
+        let index = taskDatabase.findIndex( element => element.id === parseInt(req.params.id))
+
+        //TODO ADD IF STATEMENT REGARDING WHAT WILL BE CHANGED
+        taskDatabase[index].status = req.body.status || taskDatabase[index].status
+        taskDatabase[index].action = req.body.action || taskDatabase[index].action
         res.send(`Task ${req.params.id} has been updated`);
 
-    }) //update specific tasks
+    }) 
 
-    .delete((req, res) => {
-        let index = taskDatabase.findIndex( element => element.id === req.params.id)
+    .delete((req, res) => { //supress specific tasks
+        let index = taskDatabase.findIndex( element => element.id === parseInt(req.params.id))
         taskDatabase.splice(index, 1)
-        
         res.send(`Task ${req.params.id} has been deleted`);
-    }); //supress specific tasks
+    }); 
 
 // /tasks/:status
-app.delete('/tasks/:status', (req, res) => {
-    taskDatabase.forEach(function(elem) {
-        if(elem.status === req.params.status) {
-            taskDatabase.splice(taskDatabase.indexOf(elem), 1);
-        }
-    })    
+app.delete('/tasks/:status', (req, res) => { // remove all tasks from specific status
+    let filterArray = taskDatabase.filter((element) => {toString(element.status) !== toString(req.params.status)})
+    console.log(taskDatabase)
+    taskDatabase = filterArray
+    console.log(taskDatabase)
+    
+    // taskDatabase.forEach(function(elem) {
+    //     if(elem.status === req.query.status) {
+    //         taskDatabase.splice(taskDatabase.indexOf(elem), 1);
+    //     }
+    // })    
 
-    res.send(`All ${req.params.status} have been removed from the list`);
-}); // remove all tasks from specific status
+    return res.send(`All ${req.params.status} have been removed from the list`);
+}); 
 
