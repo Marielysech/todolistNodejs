@@ -42,14 +42,26 @@ function updateTask(req, res) {
         let index = taskJson.findIndex( element => element.id === parseInt(req.params.id))
         taskJson[index].status = req.body.status || taskJson[index].status
         taskJson[index].action = req.body.action || taskJson[index].action
+        const newData = JSON.stringify(taskJson)
+        fs.writeFile("public/storage.json",newData, (err) => {
+            if (err) throw err;
+                console.log("Data updated");
+            });
         res.send(`Task ${req.params.id} has been updated`);
 
     }
 
 function deleteTask(req, res) { 
         let index = taskJson.findIndex( element => element.id === parseInt(req.params.id))
-        if (index) {
+        console.log(taskJson[0])
+        console.log(index)
+        if (index || index === 0) {
             taskJson.splice(index, 1)
+            const newData = JSON.stringify(taskJson)
+            fs.writeFile("public/storage.json", newData, (err) => {
+                if (err) throw err;
+                    console.log("Data deleted");
+                });
             return res.send(`Task ${req.params.id} has been deleted`);
         } return res.send("This task doesn't exist")
     }
