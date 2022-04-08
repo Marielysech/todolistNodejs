@@ -4,16 +4,22 @@ const ejs = require('ejs');
 const taskDatabaseJSON = fs.readFileSync('public/storage.json')
 const taskJson = JSON.parse(taskDatabaseJSON) // convert in JSON format
 
+
 function getAllTasks(req, res) { //access all tasks
      if (taskJson) {
         console.log(taskJson)
-        return res.render('index', { tasksArray: taskJson })
+        return res.render('index', { tasksArray: taskJson})
         // return res.send(taskJson)
     } return res.send("No task yet")
     // res.render('index', { tasksArray: taskDatabase });
     }
 
 function createTask(req, res) { 
+    console.log(req.body.action)
+    // if (!(req.body.action)) {
+    //     return res.render('index', { tasksArray: taskJson})
+    // }
+
     let newEntry = {
         id: Date.now(),
         action: req.body.action,
@@ -29,7 +35,6 @@ function createTask(req, res) {
     res.status(200)  
     res.redirect('/tasks');
 }
-
 
 function getTask(req, res) {
        const task = taskJson.filter(element => element.id === parseInt(req.params.id));
