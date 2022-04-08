@@ -7,7 +7,8 @@ const taskJson = JSON.parse(taskDatabaseJSON) // convert in JSON format
 function getAllTasks(req, res) { //access all tasks
      if (taskJson) {
         console.log(taskJson)
-        return res.send(taskJson)
+        return res.render('index', { tasksArray: taskJson })
+        // return res.send(taskJson)
     } return res.send("No task yet")
     // res.render('index', { tasksArray: taskDatabase });
     }
@@ -26,7 +27,7 @@ function createTask(req, res) {
             console.log("  New data added");
         });
     res.status(200)  
-    res.send(`${newEntry.action} added`);
+    res.redirect('/tasks');
 }
 
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const taskRoutes = require('./routes/taskRoutes')
 const rootRoutes = require('./routes/rootRoutes');
+const ejs = require('ejs')
 // const { use } = require('express/lib/application');
 
 const app = express();
