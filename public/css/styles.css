@@ -1,0 +1,255 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+ 
+
+html {
+    background-color: aliceblue;
+    font-family:'Merriweather', serif;
+    font-weight: 200;
+
+}
+
+strong {
+        font-weight: 200;
+
+}
+
+h1,h2 {
+    text-align: center;
+    margin: 2rem 1rem 0 1rem;
+    color: white;
+    }
+
+.title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 30px;
+    padding: 0 1rem 1rem 0;
+}   
+
+.todoWord {
+    color: rgb(229 199 106);
+    font-style: italic ;
+    font-family: 'Merriweather', serif;;
+    margin-right: 0.5rem;
+    text-decoration: underline;
+}
+
+input {
+    border-radius: 10px;
+    border: none;
+    padding: 0.3rem;
+    width: 60%;
+    margin-top: 2rem;
+    height: 25px;
+    border: 3px solid rgba(229, 198, 105, 0.366);
+}
+
+button {
+    font-family: 'Montserrat', sans-serif;
+    
+}
+    
+.appContainer{
+ border: 8px solid white;
+ border-radius: 20px;
+ margin: 1rem 5rem;
+ padding: 2rem;
+ background-color: #061b41;
+
+}
+
+.taskEntryContainer {
+    text-align: center;
+}
+
+.taskListContainer {
+    display: grid;
+}
+
+
+
+.taskListContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, auto-fit);
+    margin: 2rem 0rem;
+    padding: 0 0.6rem;
+    text-align: justify;
+    overflow-wrap: break-word;
+  }
+
+.taskInline {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    /* text-align: justify; */
+    justify-content: space-between;
+    background-color: aliceblue;
+    margin: 0.2rem auto;
+    padding: 0.3rem;
+    border-radius: 10px;
+    border: 3px solid white;
+    align-items: baseline;
+    align-content: stretch;
+    align-items: center;
+    font-size: 13px;
+    width: 65%;
+
+  
+}
+
+.taskInline > span,
+.taskInline > form {
+    padding: 0.1rem 0.1rem;
+}
+
+
+/* Task text - Acton, Status, Date */
+
+.action {
+    word-break: break-word;
+    flex-grow: 2;
+    padding: 0 0.2rem;
+
+}
+
+.status {
+    /* background-color: #6e9bec; */
+    padding: 0 0.2rem;
+    font-weight: 500;
+}
+
+.status::after,
+.date::after {
+    content: "|";
+}
+
+.date {
+    color: rgb(18, 3, 56) ;
+    font-weight: 600;
+}
+
+
+.removeBtn {
+    padding: 4px 6px;
+    border: unset;
+    border-radius: 15px;
+    color: white;
+    z-index: 1;
+    background: #f68888cf;
+    position: relative;
+    font-weight: 500;
+    font-size: 12px;
+    -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+    box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+    transition: all 250ms;
+    overflow: hidden;
+}
+
+.removeBtn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+    border-radius: 15px;
+    background-color: white;
+    z-index: -1;
+    -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+    box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+    transition: all 250ms
+   }
+   
+.removeBtn:hover {
+    color: #102d8f;
+    font-weight: 600;
+   }
+   
+.removeBtn:hover::before {
+    width: 100%;
+   }
+
+.submitBtn {
+    padding: 4px 6px;
+    border: unset;
+    border-radius: 15px;
+    color: #102d8f;
+    z-index: 1;
+    background: white;
+    position: relative;
+    font-weight: 500;
+    font-size: 10px;
+    -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+    box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+    transition: all 250ms;
+    overflow: hidden;
+    margin: 0.4rem;
+    padding: 0.7rem;
+}
+
+.submitBtn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+    border-radius: 15px;
+    z-index: -1;
+    -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+    box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+    transition: all 250ms
+   }
+   
+.submitBtn:hover {
+    color: #6e9bec;
+    font-weight: 600;
+    border: 1px solid white;
+   }
+   
+.submitBtn:hover::before {
+    width: 100%;
+   }
+
+/* .removeBtn {
+    padding: 0.2rem;
+    margin: 0 0.1rem;
+    border: 2em;
+    cursor: pointer;
+    outline: none;
+    font-size: 12px;
+    -webkit-transform: translate(0);
+    transform: translate(0);
+    background-image: linear-gradient(45deg, #4568dc, rgb(61, 13, 183));
+    padding: 0.7em 1em;
+    border-radius: 65px;
+    box-shadow: 1px 1px 10px rgba(255, 255, 255, 0.438);
+    -webkit-transition: box-shadow 0.25s;
+    transition: box-shadow 0.25s;
+    color: rgb(0, 0, 0);
+} */
+/* 
+.removeBtn::after {
+    content: "";
+    border-radius: 10px;
+    position: absolute;
+    margin: 4px;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+    background: aliceblue;
+    ;
+
+}
+
+.removeBtn:hover  {
+background-image: linear-gradient(-45deg, #4568dc, rgb(61, 13, 183));
+}
+
+.rmvBtnDiv {
+    display: flex;
+} */
