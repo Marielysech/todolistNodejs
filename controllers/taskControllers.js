@@ -15,25 +15,22 @@ function getAllTasks(req, res) { //access all tasks
     }
 
 function createTask(req, res) { 
-    console.log(req.body.action)
-    // if (!(req.body.action)) {
-    //     return res.render('index', { tasksArray: taskJson})
-    // }
-
-    let newEntry = {
-        id: Date.now(),
-        action: req.body.action,
-        status: "todo"
-    }
-
-    taskJson.push(newEntry);
-    const newData = JSON.stringify(taskJson) //back to row format
-    fs.writeFile("public/storage.json", newData, (err) => {
-        if (err) throw err;
-            console.log("  New data added");
-        });
-    res.status(200)  
-    res.redirect('/tasks');
+    if (req.body.action) {
+        let newEntry = {
+            id: Date.now(),
+            action: req.body.action,
+            status: "todo"
+        }
+    
+        taskJson.push(newEntry);
+        const newData = JSON.stringify(taskJson) //back to row format
+        fs.writeFile("public/storage.json", newData, (err) => {
+            if (err) throw err;
+                console.log("  New data added");
+            });
+        res.status(200)  
+        res.redirect('/tasks');
+    } res.end()
 }
 
 function getTask(req, res) {
@@ -68,7 +65,7 @@ function deleteTask(req, res) {
                 if (err) throw err;
                     console.log("Data deleted");
                 });
-            return res.send(`Task ${req.params.id} has been deleted`);
+            return res.redirect('/tasks');
         } return res.send("This task doesn't exist")
     }
 

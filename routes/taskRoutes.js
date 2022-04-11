@@ -13,4 +13,7 @@ router.route('/:id')
     .put(taskController.updateTask) 
     .delete(taskController.deleteTask);
 
+router.route('/remove/')
+    .post(taskController.deleteTask) 
+  
 module.exports = router;
