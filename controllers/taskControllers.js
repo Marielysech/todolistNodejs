@@ -1,5 +1,6 @@
 const fs = require('fs');
 const ejs = require('ejs');
+const moment = require('moment')
 
 const taskDatabaseJSON = fs.readFileSync('public/storage.json')
 const taskJson = JSON.parse(taskDatabaseJSON) // convert in JSON format
@@ -15,9 +16,13 @@ function getAllTasks(req, res) { //access all tasks
     }
 
 function createTask(req, res) { 
+    //TODO change ID format to date and use date in tasks
+    // let date = Date.now()
+    // let formatD = date.moment().format('MMMM Do YYYY, h:mm:ss a')
     if (req.body.action) {
         let newEntry = {
             id: Date.now(),
+            date: moment().add(10, 'days').calendar(),
             action: req.body.action,
             status: "todo"
         }
