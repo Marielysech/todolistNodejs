@@ -29,7 +29,7 @@ h1,h2 {
 }   
 
 .todoWord {
-    color: rgb(229 199 106);
+    color: rgb(33 13 118);
     font-style: italic ;
     font-family: 'Merriweather', serif;;
     margin-right: 0.5rem;
@@ -43,7 +43,7 @@ input {
     width: 60%;
     margin-top: 2rem;
     height: 25px;
-    border: 3px solid rgba(229, 198, 105, 0.366);
+    border: 3px solid rgba(32, 13, 118, 0.561);
 }
 
 button {
@@ -56,7 +56,7 @@ button {
  border-radius: 20px;
  margin: 1rem 5rem;
  padding: 2rem;
- background-color: #061b41;
+ background-color: #a4c5ff;
 
 }
 
@@ -200,13 +200,15 @@ button {
     z-index: -1;
     -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
     box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+    background-color: rgb(33 13 118);
+
+
     transition: all 250ms
    }
    
 .submitBtn:hover {
-    color: #6e9bec;
+    color: #ffffff;
     font-weight: 600;
-    border: 1px solid white;
    }
    
 .submitBtn:hover::before {
